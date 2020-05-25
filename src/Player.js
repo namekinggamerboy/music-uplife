@@ -390,7 +390,7 @@ class Player {
         queue.skipped = false;
         let song = queue.songs[0];
         // Download the song
-        let dispatcher = queue.connection.play(ytdl(song.url, { filter: "audioonly", quality: "highestaudio" }));
+        let dispatcher = queue.connection.play(ytdl(song.url, { quality: "highestaudio" filter: "audio", highWaterMark: 1 << 25  }));
         queue.dispatcher = dispatcher;
         // Set volume
         dispatcher.setVolumeLogarithmic(queue.volume / 200);
