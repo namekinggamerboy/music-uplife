@@ -295,13 +295,6 @@ class Player {
             resolve(currentSong);
         });
     }
- queueInfo(guildId){
-   return new Promise(async(resolve, reject) => {
-  let queue = this.queues.find((g) => g.guildID === guildID)
-        if (!queue) return reject('Not playing');
- resolve(queue);
- });
-}
     /**
      * Enable or disable the repeat mode
      * @param {string} guildID
