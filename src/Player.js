@@ -118,6 +118,38 @@ class Player {
         });
     }
 
+seek(voiceChannel, songName, requestedBy, seek) {
+        this.queues = this.queues.filter((g) => g.guildID !== voiceChannel.id);
+        return new Promise(async (resolve, reject) => {
+        
+            // Gets guild queue
+             let queUe = this.queues.find((g) => g.guildID === guildID);
+            if(!queUe) return reject('Not playing');
+            // Stops the dispatcher
+            queUe.stopped = true;
+            queUe.songs = [];
+            queUe.dispatcher.end();
+
+            if(!voiceChannel || typeof voiceChannel !== "object") return reject("voiceChannel must be type of VoiceChannel. value="+voiceChannel);
+            if(typeof songName !== "string") return reject("songName must be type of string. value="+songName);
+            // Searches the song
+            let video = await Util.getFirstYoutubeResult(songName, this.SYA);
+            if(!video) return reject('Song not found');
+            // Joins the voice channel
+            let connection = await voiceChannel.join();
+            // Creates a new guild with data
+            let queue = new Queue(voiceChannel.guild.id);
+            queue.connection = connection;
+            let song = new Song(video, queue, requestedBy, ytdl);
+            queue.songs.push(song);
+            // Add the queue to the list
+            this.queues.push(queue);
+            // Plays the song
+            this._playSong(queue.guildID, true, seek);
+            // Resolves the song.
+            resolve(song);
+        });
+    }
     /**
      * Pauses the current song.
      * @param {string} guildID
