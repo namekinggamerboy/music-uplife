@@ -118,7 +118,7 @@ class Player {
         });
     }
 
-seek(voiceChannel, songName, requestedBy, seek) {
+seek(voiceChannel, songName, requestedBy, seek, guildID) {
         this.queues = this.queues.filter((g) => g.guildID !== voiceChannel.id);
         return new Promise(async (resolve, reject) => {
         
