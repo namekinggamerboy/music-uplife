@@ -422,7 +422,7 @@ seek(voiceChannel, songName, requestedBy, seek, guildID) {
         let song = queue.songs[0];
         // Download the song
      
-        var dispatcher = queue.connection.play(ytdl(song.url, { filter: "audio", quality: "highestaudio", highWaterMark: 1 << 25  }), { seek: parseInt(seekTo||0)});
+        var dispatcher = queue.connection.play(ytdl(song.url, { filter: "audio", quality: "highestaudio", highWaterMark: 1 << 25  }), { seek: seekTo||0 } );
 
   queue.dispatcher = dispatcher;
         // Set volume
