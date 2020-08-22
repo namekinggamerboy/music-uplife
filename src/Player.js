@@ -399,7 +399,7 @@ seek(voiceChannel, songName, requestedBy, seek, guildID) {
      * @param {string} guildID
      * @param {Boolean} firstPlay Whether the function was called from the play() one
      */
-    async _playSong(guildID, firstPlay, seek) {
+    async _playSong(guildID, firstPlay, seekTo) {
         // Gets guild queue
         let queue = this.queues.find((g) => g.guildID === guildID);
         // If there isn't any music in the queue
@@ -421,11 +421,9 @@ seek(voiceChannel, songName, requestedBy, seek, guildID) {
         queue.skipped = false;
         let song = queue.songs[0];
         // Download the song
-      if(seek){
-        var dispatcher = queue.connection.play(ytdl(song.url, { filter: "audio", quality: "highestaudio", highWaterMark: 1 << 25  }), { seek: parseInt(seek)});
-      } else {
-var dispatcher = queue.connection.play(ytdl(song.url, { filter: "audio", quality: "highestaudio", highWaterMark: 1 << 25  }));
-}
+     
+        var dispatcher = queue.connection.play(ytdl(song.url, { filter: "audio", quality: "highestaudio", highWaterMark: 1 << 25  }), { seek: parseInt(seekTo||0)});
+
   queue.dispatcher = dispatcher;
         // Set volume
         dispatcher.setVolumeLogarithmic(queue.volume / 200);
