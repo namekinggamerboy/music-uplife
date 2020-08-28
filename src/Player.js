@@ -422,7 +422,7 @@ seek(voiceChannel, songName, requestedBy, se, guildID) {
         let song = queue.songs[0];
         // Download the song
      
-        var dispatcher = queue.connection.play(ytdl(song.url, { filter: "audio", quality: "highestaudio", highWaterMark: 1 << 25  }), { seek: seekTo||0 });
+        var dispatcher = queue.connection.play(ytdl(song.url, { filter: "audio", quality: "highestaudio", highWaterMark: 1 << 25  }), { seek: parseInt(seekTo) });
 
   queue.dispatcher = dispatcher;
         // Set volume
@@ -430,7 +430,7 @@ seek(voiceChannel, songName, requestedBy, se, guildID) {
         // When the song ends
         dispatcher.on('finish', () => {
             // Play the next song
-            return this._playSong(guildID, false);
+            return this._seekSong(guildID, false);
         });
     }
 
