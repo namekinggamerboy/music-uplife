@@ -118,17 +118,9 @@ class Player {
         });
     }
 
-seek(voiceChannel, songName, requestedBy, se, guildID) {
+seek(voiceChannel, songName, requestedBy, se) {
         this.queues = this.queues.filter((g) => g.guildID !== voiceChannel.id);
         return new Promise(async (resolve, reject) => {
-        
-            // Gets guild queue
-             let queUe = this.queues.find((g) => g.guildID === guildID);
-            if(!queUe) return reject('Not playing');
-            // Stops the dispatcher
-            queUe.stopped = true;
-            queUe.songs = [];
-            queUe.dispatcher.end();
 
             if(!voiceChannel || typeof voiceChannel !== "object") return reject("voiceChannel must be type of VoiceChannel. value="+voiceChannel);
             if(typeof songName !== "string") return reject("songName must be type of string. value="+songName);
