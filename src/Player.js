@@ -137,7 +137,7 @@ seek(voiceChannel, songName, requestedBy, se) {
             // Add the queue to the list
             this.queues.push(queue);
             // Plays the song
-            this._seekSong(queue.guildID, true, se);
+            this._playSong(queue.guildID, true, se);
             // Resolves the song.
             resolve(song);
         });
@@ -391,7 +391,8 @@ seek(voiceChannel, songName, requestedBy, se) {
      * @param {string} guildID
      * @param {Boolean} firstPlay Whether the function was called from the play() one
      */
-    async _seekSong(guildID, firstPlay, seekTo) {
+    
+async _playSong(guildID, firstPlay, seekTo) {
         // Gets guild queue
         let queue = this.queues.find((g) => g.guildID === guildID);
         // If there isn't any music in the queue
@@ -414,42 +415,7 @@ seek(voiceChannel, songName, requestedBy, se) {
         let song = queue.songs[0];
         // Download the song
      
-        var dispatcher = queue.connection.play(ytdl(song.url, { filter: "audio", quality: "highestaudio", highWaterMark: 1 << 25  }), { seek: seekTo });
-
-  queue.dispatcher = dispatcher;
-        // Set volume
-        dispatcher.setVolumeLogarithmic(queue.volume / 200);
-        // When the song ends
-        dispatcher.on('finish', () => {
-            // Play the next song
-            return this._seekSong(guildID, false);
-        });
-    }
-
-async _playSong(guildID, firstPlay) {
-        // Gets guild queue
-        let queue = this.queues.find((g) => g.guildID === guildID);
-        // If there isn't any music in the queue
-        if(queue.songs.length < 2 && !firstPlay && !queue.repeatMode){
-            // Leaves the voice channel
-            if(this.options.leaveOnEnd && !queue.stopped) queue.connection.channel.leave();
-            // Remoces the guild from the guilds list
-            this.queues = this.queues.filter((g) => g.guildID !== guildID);
-            // Emits stop event
-            if(queue.stopped){
-                if(this.options.leaveOnStop) queue.connection.channel.leave();
-                return queue.emit('stop');
-            }
-            // Emits end event 
-            return queue.emit('end');
-        }
-        // Emit songChanged event
-        if(!firstPlay) queue.emit('songChanged', (!queue.repeatMode ? queue.songs.shift() : queue.songs[0]), queue.songs[0], queue.skipped, queue.repeatMode);
-        queue.skipped = false;
-        let song = queue.songs[0];
-        // Download the song
-     
-        var dispatcher = queue.connection.play(ytdl(song.url, { filter: "audio", quality: "highestaudio", highWaterMark: 1 << 25  }));
+        var dispatcher = queue.connection.play(ytdl(song.url, { filter: "audio", quality: "highestaudio", highWaterMark: 1 << 25  }),{ seek: seekTo });
 
   queue.dispatcher = dispatcher;
         // Set volume
