@@ -367,7 +367,7 @@ class Player {
      * @param {Boolean} firstPlay Whether the function was called from the play() one
      */
     
-async _playSong(guildID, firstPlay, seekTo) {
+async _playSong(guildID, firstPlay, seekT) {
         // Gets guild queue
         let queue = this.queues.find((g) => g.guildID === guildID);
         // If there isn't any music in the queue
@@ -390,7 +390,7 @@ async _playSong(guildID, firstPlay, seekTo) {
         let song = queue.songs[0];
         // Download the song
      
-        var dispatcher = queue.connection.play(ytdl(song.url, { filter: "audio", quality: "highestaudio", highWaterMark: 1 << 25  }),{ seek: seekTo });
+        var dispatcher = queue.connection.play(ytdl(song.url, { filter: "audio", quality: "highestaudio", highWaterMark: 1 << 25  }),{ seek: seekT });
 
   queue.dispatcher = dispatcher;
         // Set volume
