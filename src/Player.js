@@ -119,7 +119,7 @@ class Player {
         });
     }
 
- seek(voiceChannel, songName, requestedBy, gf) {
+ seek(voiceChannel, songName, requestedBy, guildID gf) {
         this.queues = this.queues.filter((g) => g.guildID !== voiceChannel.id);
         return new Promise(async (resolve, reject) => {
             let que = this.queues.find((g) => g.guildID === guildID);
