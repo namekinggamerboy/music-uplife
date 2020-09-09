@@ -94,7 +94,7 @@ class Player {
      * @param {User} requestedBy The user who requested the song.
      * @returns {Promise<Song>}
      */
-    play(voiceChannel, songName, requestedBy) {
+    play(voiceChannel, songName, requestedBy, gf) {
         this.queues = this.queues.filter((g) => g.guildID !== voiceChannel.id);
         return new Promise(async (resolve, reject) => {
             if(!voiceChannel || typeof voiceChannel !== "object") return reject("voiceChannel must be type of VoiceChannel. value="+voiceChannel);
@@ -107,6 +107,7 @@ class Player {
             // Creates a new guild with data
             let queue = new Queue(voiceChannel.guild.id);
             queue.connection = connection;
+            queue.seek = gf;
             let song = new Song(video, queue, requestedBy, ytdl);
             queue.songs.push(song);
             // Add the queue to the list
@@ -367,7 +368,7 @@ class Player {
      * @param {Boolean} firstPlay Whether the function was called from the play() one
      */
     
-async _playSong(guildID, firstPlay, seekT) {
+async _playSong(guildID, firstPlay) {
         // Gets guild queue
         let queue = this.queues.find((g) => g.guildID === guildID);
         // If there isn't any music in the queue
@@ -390,7 +391,7 @@ async _playSong(guildID, firstPlay, seekT) {
         let song = queue.songs[0];
         // Download the song
      
-        var dispatcher = queue.connection.play(ytdl(song.url, { filter: "audio", quality: "highestaudio", highWaterMark: 1 << 25  }),{ seek: seekT });
+        var dispatcher = queue.connection.play(ytdl(song.url, { filter: "audio", quality: "highestaudio", highWaterMark: 1 << 25  }),{ seek: queue.seek });
 
   queue.dispatcher = dispatcher;
         // Set volume
