@@ -120,15 +120,15 @@ class Player {
     }
 
  seek(voiceChannel, songName, requestedBy, gf) {
- let que = this.queues.find((g) => g.guildID === guildID);
+        this.queues = this.queues.filter((g) => g.guildID !== voiceChannel.id);
+        return new Promise(async (resolve, reject) => {
+            let que = this.queues.find((g) => g.guildID === guildID);
             if(!que) return reject('Not playing');
             // Stops the dispatcher
             que.stopped = true;
             que.songs = [];
             que.dispatcher.end();
 
-        this.queues = this.queues.filter((g) => g.guildID !== voiceChannel.id);
-        return new Promise(async (resolve, reject) => {
             if(!voiceChannel || typeof voiceChannel !== "object") return reject("voiceChannel must be type of VoiceChannel. value="+voiceChannel);
             if(typeof songName !== "string") return reject("songName must be type of string. value="+songName);
             // Searches the song
