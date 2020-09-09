@@ -94,7 +94,39 @@ class Player {
      * @param {User} requestedBy The user who requested the song.
      * @returns {Promise<Song>}
      */
-    play(voiceChannel, songName, requestedBy, gf) {
+    play(voiceChannel, songName, requestedBy) {
+        this.queues = this.queues.filter((g) => g.guildID !== voiceChannel.id);
+        return new Promise(async (resolve, reject) => {
+            if(!voiceChannel || typeof voiceChannel !== "object") return reject("voiceChannel must be type of VoiceChannel. value="+voiceChannel);
+            if(typeof songName !== "string") return reject("songName must be type of string. value="+songName);
+            // Searches the song
+            let video = await Util.getFirstYoutubeResult(songName, this.SYA);
+            if(!video) return reject('Song not found');
+            // Joins the voice channel
+            let connection = await voiceChannel.join();
+            // Creates a new guild with data
+            let queue = new Queue(voiceChannel.guild.id);
+            queue.connection = connection;
+            queue.seek = 0;
+            let song = new Song(video, queue, requestedBy, ytdl);
+            queue.songs.push(song);
+            // Add the queue to the list
+            this.queues.push(queue);
+            // Plays the song
+            this._playSong(queue.guildID, true);
+            // Resolves the song.
+            resolve(song);
+        });
+    }
+
+ seek(voiceChannel, songName, requestedBy, gf) {
+ let que = this.queues.find((g) => g.guildID === guildID);
+            if(!que) return reject('Not playing');
+            // Stops the dispatcher
+            que.stopped = true;
+            que.songs = [];
+            que.dispatcher.end();
+
         this.queues = this.queues.filter((g) => g.guildID !== voiceChannel.id);
         return new Promise(async (resolve, reject) => {
             if(!voiceChannel || typeof voiceChannel !== "object") return reject("voiceChannel must be type of VoiceChannel. value="+voiceChannel);
