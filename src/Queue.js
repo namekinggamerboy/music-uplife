@@ -57,7 +57,7 @@ class Queue extends EventEmitter {
          */
         this.repeatMode = false;
 
-        this.seek = 0;
+        this.seek = null;
     }
 
 };
