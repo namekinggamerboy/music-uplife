@@ -219,6 +219,7 @@ class Player {
             if(!video) return reject('Song not found');
             let song = new Song(video, queue, requestedBy, ytdl);
             // Updates queue
+            
             queue.songs.push(song);
             // Resolves the song
             resolve(song);
@@ -391,7 +392,7 @@ async _playSong(guildID, firstPlay) {
         let song = queue.songs[0];
         // Download the song
      
-        var dispatcher = queue.connection.play(ytdl(song.url, { filter: "audio", quality: "highestaudio", highWaterMark: 1 << 25  }),{ seek: queue.seek });
+        var dispatcher = queue.connection.play(ytdl(song.url, { filter: "audio", quality: "highestaudio", highWaterMark: 1 << 25  }),{ seek: queue.seek||0 });
 
   queue.dispatcher = dispatcher;
         // Set volume
