@@ -57,6 +57,8 @@ class Queue extends EventEmitter {
          */
         this.repeatMode = false;
 
+        thsi.volume = null;
+
         this.seek = null;
     }
 
