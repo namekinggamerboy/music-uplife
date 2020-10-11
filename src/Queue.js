@@ -45,7 +45,7 @@ class Queue extends EventEmitter {
          * The stream volume.
          * @type {Number}
          */
-        this.volume = 100;
+        this.volume = null;
         /**
          * Whether the stream is currently playing.
          * @type {Boolean}
@@ -56,8 +56,6 @@ class Queue extends EventEmitter {
          * @type {Boolean}
          */
         this.repeatMode = false;
-
-        thsi.volume = null;
 
         this.seek = null;
     }
