@@ -108,6 +108,7 @@ class Player {
             let queue = new Queue(voiceChannel.guild.id);
             queue.connection = connection;
             queue.seek = 0;
+            queue.volume = 100;
             let song = new Song(video, queue, requestedBy, ytdl);
             queue.songs.push(song);
             // Add the queue to the list
@@ -140,6 +141,7 @@ class Player {
             let queue = new Queue(voiceChannel.guild.id);
             queue.connection = connection;
             queue.seek = gf;
+           queue.volume = 100;
             let song = new Song(video, queue, requestedBy, ytdl);
             queue.songs.push(song);
             // Add the queue to the list
@@ -218,6 +220,7 @@ class Player {
             if(!queue) return reject('Not playing');
             // Updates volume
             queue.dispatcher.setVolumeLogarithmic(percent / 200);
+            queue.volume = percent;
             // Resolves guild queue
             resolve(queue);
         });
@@ -428,7 +431,7 @@ async _playSong(guildID, firstPlay) {
 
   queue.dispatcher = dispatcher;
         // Set volume
-        dispatcher.setVolumeLogarithmic(queue.volume / 200);
+        dispatcher.setVolumeLogarithmic(queue.volume||100 / 200);
         // When the song ends
         dispatcher.on('finish', () => {
             // Play the next song
