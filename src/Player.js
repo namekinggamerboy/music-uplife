@@ -430,7 +430,7 @@ async _playSong(guildID, firstPlay) {
 
   queue.dispatcher = dispatcher;
         // Set volume
-        dispatcher.setVolumeLogarithmic(queue.volume||100 / 200);
+        dispatcher.setVolumeLogarithmic(100 / 200);
         // When the song ends
         dispatcher.on('finish', () => {
             // Play the next song
