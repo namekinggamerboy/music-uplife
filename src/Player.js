@@ -1,7 +1,7 @@
 const ytdl = require('ytdl-core');
 const SYA = require('simple-youtube-api');
 const mergeOptions = require('merge-options');
-
+const ffmpeg-static = require("ffmpeg-static");
 const { VoiceChannel, version } = require("discord.js");
 if(version.split('.')[0] !== '12') throw new Error("Only the master branch of discord.js library is supported for now. Install it using 'npm install discordjs/discord.js'.");
 const Queue = require('./Queue');
@@ -427,7 +427,7 @@ async _playSong(guildID, firstPlay) {
         let song = queue.songs[0];
         // Download the song
      
-        var dispatcher = queue.connection.play(ytdl(song.url, { filter: "audio", quality: "highestaudio", highWaterMark: 1 << 25  }),{ seek: queue.seek||0 });
+        var dispatcher = queue.connection.play(ytdl(song.url, { filter: "audioonly", quality: "highestaudio", highWaterMark: 1 << 25  }),{ seek: queue.seek||0 });
 
   queue.dispatcher = dispatcher;
         // Set volume
